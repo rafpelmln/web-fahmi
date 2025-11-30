@@ -35,12 +35,19 @@
         </a>
     </nav>
 
-    <div class="mt-auto">
+    <div class="mt-auto w-100">
         <small class="text-secondary d-block mb-2">Panduan Penilaian</small>
-        <ul class="list-unstyled small text-secondary">
+        <ul class="list-unstyled small text-secondary mb-3">
             <li><i class="fas fa-check-circle text-success me-2"></i> Tools & metode terlampir</li>
             <li><i class="fas fa-check-circle text-success me-2"></i> CRUD lengkap tiap role</li>
             <li><i class="fas fa-check-circle text-success me-2"></i> Debug & dokumentasi</li>
         </ul>
+
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="btn btn-danger w-100">
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
+            </button>
+        </form>
     </div>
 </aside>

@@ -74,3 +74,91 @@ body {
     border-radius: 16px;
     box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
 }
+
+.form-card {
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
+}
+
+.form-card .card-header {
+    background: linear-gradient(90deg, #eef2ff, #f5f7ff);
+    border-bottom: 0;
+    border-radius: 18px 18px 0 0;
+}
+
+.form-card .card-title {
+    font-weight: 700;
+    margin-bottom: 0;
+    color: #1f2937;
+}
+
+.form-card .step-pill {
+    background: #e0e7ff;
+    color: #4338ca;
+    border-radius: 30px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.info-panel {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.info-panel .card-header {
+    border-radius: 16px 16px 0 0;
+}
+
+.status-legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+}
+
+.status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 999px;
+    padding: 0.2rem 0.75rem;
+    font-size: 0.85rem;
+    text-transform: capitalize;
+}
+
+.status-chip.pending {
+    background: rgba(251, 191, 36, 0.15);
+    color: #b45309;
+}
+
+.status-chip.approved {
+    background: rgba(52, 211, 153, 0.15);
+    color: #047857;
+}
+
+.status-chip.rejected {
+    background: rgba(248, 113, 113, 0.15);
+    color: #b91c1c;
+}
+
+.detail-list dt {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #9ca3af;
+    letter-spacing: 0.05em;
+}
+
+.detail-list dd {
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 992px) {
+    .app-sidebar {
+        display: none;
+    }
+}
