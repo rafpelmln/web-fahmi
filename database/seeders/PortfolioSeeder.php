@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Student;
 use App\Models\Portfolio;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
@@ -48,7 +49,7 @@ class PortfolioSeeder extends Seeder
             ],
         ];
 
-        // Buat siswa
+        // Buat siswa (di tabel students) dan juga akun user untuk setiap siswa (users table)
         $createdStudents = [];
         foreach ($students as $studentData) {
             $createdStudents[] = Student::firstOrCreate(
@@ -58,6 +59,16 @@ class PortfolioSeeder extends Seeder
                     'class' => $studentData['class'],
                 ]
             );
+
+            // Buat akun user untuk siswa (jika belum ada) agar portfolios.student_id dapat mengacu ke users.id
+            $email = Str::slug($studentData['name']) . '@example.com';
+            User::firstOrCreate([
+                'email' => $email,
+            ], [
+                'name' => $studentData['name'],
+                'password' => bcrypt('password'),
+                'role' => 'student',
+            ]);
         }
 
         // Mapping student ID ke nama dan kelas
@@ -172,6 +183,19 @@ class PortfolioSeeder extends Seeder
             Storage::disk('public')->put("portfolios/{$fileName}", 'Dummy file content for testing');
 
             $portfolioData['file_path'] = "portfolios/{$fileName}";
+
+            // Jika ada student_id numeric (mengacu ke index mapping), ubah agar mengacu ke users.id
+            if (!empty($portfolioData['student_id'])) {
+                // Ambil student berdasarkan id mapping (students table) untuk dapatkan nama
+                $studentIndex = $portfolioData['student_id'];
+                if (isset($studentMapping[$studentIndex])) {
+                    $studentName = $studentMapping[$studentIndex]['name'];
+                    $user = User::where('name', $studentName)->first();
+                    if ($user) {
+                        $portfolioData['student_id'] = $user->id;
+                    }
+                }
+            }
 
             Portfolio::create($portfolioData);
         }

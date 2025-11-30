@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Portfolio;
-use App\Models\Student;
+use App\Models\User;
 use App\Http\Requests\StorePortfolioRequest;
 use App\Http\Requests\UpdatePortfolioRequest;
 use Illuminate\Http\Request;
@@ -68,7 +68,8 @@ class PortfolioController extends Controller
         // Check authorization
         $this->authorize('create', Portfolio::class);
 
-        $students = Student::all();
+        // Ambil akun user yang berrole 'student' untuk dipilih (admin/teacher dapat memilih)
+        $students = User::where('role', 'student')->get();
         return view('portfolios.create', compact('students'));
     }
 

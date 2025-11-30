@@ -14,26 +14,18 @@
                 <form action="{{ route('portfolios.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                     @csrf
 
-                    <!-- Student Name -->
+                    <!-- Student (pilih dari akun siswa terdaftar) -->
                     <div class="mb-3">
-                        <label for="student_name" class="form-label">Nama Siswa <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('student_name') is-invalid @enderror" 
-                               id="student_name" name="student_name" value="{{ old('student_name') }}" 
-                               placeholder="Masukkan nama siswa" required minlength="3" maxlength="255">
-                        @error('student_name')
-                        <div class="invalid-feedback d-block">
-                            <i class="fas fa-exclamation-circle"></i> {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
-                    <!-- Student Class -->
-                    <div class="mb-3">
-                        <label for="student_class" class="form-label">Kelas <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('student_class') is-invalid @enderror" 
-                               id="student_class" name="student_class" value="{{ old('student_class') }}" 
-                               placeholder="Contoh: XII A, XII B, XII C" required maxlength="50">
-                        @error('student_class')
+                        <label for="student_id" class="form-label">Pilih Siswa <span class="text-danger">*</span></label>
+                        <select id="student_id" name="student_id" class="form-select @error('student_id') is-invalid @enderror" required>
+                            <option value="">-- Pilih Siswa --</option>
+                            @foreach($students as $s)
+                                <option value="{{ $s->id }}" @if(old('student_id') == $s->id) selected @endif>
+                                    {{ $s->name }} @if($s->email) &middot; <small class="text-muted">{{ $s->email }}</small> @endif
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('student_id')
                         <div class="invalid-feedback d-block">
                             <i class="fas fa-exclamation-circle"></i> {{ $message }}
                         </div>

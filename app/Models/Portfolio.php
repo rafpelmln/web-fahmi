@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Attributes\Enum;
 
 class Portfolio extends Model
@@ -35,7 +36,8 @@ class Portfolio extends Model
      */
     public function student(): BelongsTo
     {
-        return $this->belongsTo(Student::class);
+        // Portfolio.owner disimpan sebagai user dengan role 'student'
+        return $this->belongsTo(User::class, 'student_id');
     }
 
     /**

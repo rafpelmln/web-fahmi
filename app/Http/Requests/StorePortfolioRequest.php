@@ -23,8 +23,7 @@ class StorePortfolioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_name' => ['required', 'string', 'max:255', 'min:3'],
-            'student_class' => ['required', 'string', 'max:50'],
+            'student_id' => ['required', 'exists:users,id'],
             'title' => ['required', 'string', 'max:255', 'min:3'],
             'description' => ['required', 'string', 'min:10', 'max:5000'],
             'type' => ['required', 'in:prestasi,karya,sertifikat'],
@@ -38,11 +37,8 @@ class StorePortfolioRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'student_name.required' => 'Nama siswa wajib diisi',
-            'student_name.min' => 'Nama minimal 3 karakter',
-            'student_name.max' => 'Nama maksimal 255 karakter',
-            'student_class.required' => 'Kelas wajib diisi',
-            'student_class.max' => 'Kelas maksimal 50 karakter',
+            'student_id.required' => 'Siswa wajib dipilih',
+            'student_id.exists' => 'Siswa tidak ditemukan atau belum terdaftar',
             'title.required' => 'Judul portfolio wajib diisi',
             'title.min' => 'Judul minimal 3 karakter',
             'title.max' => 'Judul maksimal 255 karakter',

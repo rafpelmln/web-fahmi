@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('student_id')->comment('Reference ke students table');
+            $table->unsignedBigInteger('student_id')->comment('Reference ke users table (student user)');
             $table->string('title');
             $table->text('description');
             $table->enum('type', ['prestasi', 'karya', 'sertifikat'])->comment('Jenis portfolio');
@@ -26,7 +26,7 @@ return new class extends Migration
             // Foreign keys
             $table->foreign('student_id')
                 ->references('id')
-                ->on('students')
+                ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             

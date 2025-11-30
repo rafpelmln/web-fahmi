@@ -5,7 +5,12 @@ use App\Http\Controllers\PortfolioController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    // Jika user sudah login arahkan ke dashboard, jika belum tampilkan form login di root
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
