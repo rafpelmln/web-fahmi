@@ -139,6 +139,107 @@ php artisan serve
 
 ---
 
+## 🧱 UML Overview (Aktual Sesuai Migrasi)
+
+```mermaid
+classDiagram
+    direction LR
+
+    class User {
+        bigint id
+        string name
+        string email
+        enum role (student|teacher|admin)
+        timestamps
+    }
+
+    class Student {
+        bigint id
+        string nis
+        string name
+        string class
+        timestamps
+    }
+
+    class Portfolio {
+        bigint id
+        bigint student_id (FK -> users.id nullable)
+        string student_name
+        string student_class
+        string title
+        text description
+        enum type (prestasi|karya|sertifikat)
+        string file_path
+        enum verified_status (pending|approved|rejected)
+        bigint verified_by (FK -> users.id nullable)
+        timestamp verified_at nullable
+        timestamps
+    }
+
+    User "1" <-- "0..*" Portfolio : student_id
+    User "1" <-- "0..*" Portfolio : verified_by
+```
+
+> **Catatan:** Tabel `students` berdiri sendiri (tidak punya FK) sesuai migrasi `create_students_table`. Data siswa tambahan dapat disinkronkan ke tabel `users` atau dijadikan referensi manual sesuai kebutuhan sekolah.
+
+---
+
+## 🗺️ ERD (Entity Relationship Diagram)
+
+```mermaid
+erDiagram
+    USERS ||--o{ PORTFOLIOS : "student_id"
+    USERS ||--o{ PORTFOLIOS : "verified_by"
+
+    USERS {
+        bigint id PK
+        varchar name
+        varchar email
+        enum role
+        timestamps
+    }
+
+    STUDENTS {
+        bigint id PK
+        varchar nis UNIQUE
+        varchar name
+        varchar class
+        timestamps
+    }
+
+    PORTFOLIOS {
+        bigint id PK
+        bigint student_id FK
+        varchar student_name
+        varchar student_class
+        varchar title
+        text description
+        enum type
+        varchar file_path
+        enum verified_status
+        bigint verified_by FK
+        timestamp verified_at
+        timestamps
+    }
+```
+
+---
+
+## 🗄️ Database Schema & Relasi
+
+| Tabel | Kolom Utama | Keterangan Relasi |
+|-------|-------------|-------------------|
+| `users` | `id`, `name`, `email`, `password`, `role` | Role column ditambahkan oleh migrasi `add_role_to_users_table`. Setiap `portfolio.student_id` dan `portfolio.verified_by` merujuk ke `users.id`. |
+| `students` | `id`, `nis`, `name`, `class` | Disiapkan untuk menyimpan profil siswa lengkap. Tidak ada FK di migrasi karena portfolio langsung menunjuk `users`. Index tersedia pada `nis` & `class`. |
+| `portfolios` | `id`, `student_id`, `student_name`, `student_class`, `title`, `description`, `type`, `file_path`, `verified_status`, `verified_by`, `verified_at`, `timestamps` | `student_id` nullable setelah migrasi `modify_student_id_nullable`. `verified_by` menaut ke guru/admin pada tabel `users`. Index dibuat di `student_id`, `verified_status`, `created_at` untuk performa lisensi. |
+
+**Ringkasan hubungan:**  
+- **User (role=student)** `1 - n` **Portfolio** via `student_id`.  
+- **User (role=teacher/admin)** `1 - n` **Portfolio** via `verified_by`.  
+- **Student table** dapat dipakai sebagai master data & di-sync ke `users`/`portfolios` lewat kolom `student_name` dan `student_class` (ditambahkan oleh migrasi `add_student_name_class_to_portfolios_table`).
+
+---
+
 ## 🔒 Security Features
 
 - Server-side & client-side validation
