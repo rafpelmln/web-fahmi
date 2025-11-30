@@ -3,133 +3,167 @@
 @section('title', 'Daftar Portfolio')
 
 @section('content')
-<div class="row">
-    <div class="col-md-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>
-                <i class="fas fa-folder-open"></i> Daftar Portfolio
-            </h2>
+<div class="row g-4">
+    <div class="col-12">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+            <div>
+                <h1 class="h4 mb-1 fw-bold">Manajemen Portfolio</h1>
+                <p class="text-muted mb-0">Kelola seluruh data berdasarkan hak akses {{ $user->role }}.</p>
+            </div>
             @can('create', App\Models\Portfolio::class)
-            <a href="{{ route('portfolios.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Buat Portfolio Baru
-            </a>
+                <a href="{{ route('portfolios.create') }}" class="btn btn-primary mt-3 mt-md-0">
+                    <i class="fas fa-plus me-2"></i>Tambah Portfolio
+                </a>
             @endcan
         </div>
+    </div>
 
-        <!-- Search & Filter -->
-        <div class="card mb-4">
+    <div class="col-12">
+        <div class="row g-3">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="card-body">
+                        <small class="text-muted text-uppercase">Total</small>
+                        <h3 class="fw-bold mb-0">{{ $stats['total'] }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="card-body">
+                        <small class="text-muted text-uppercase">Pending</small>
+                        <h3 class="fw-bold mb-0 text-warning">{{ $stats['pending'] }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="card-body">
+                        <small class="text-muted text-uppercase">Disetujui</small>
+                        <h3 class="fw-bold mb-0 text-success">{{ $stats['approved'] }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="card-body">
+                        <small class="text-muted text-uppercase">Ditolak</small>
+                        <h3 class="fw-bold mb-0 text-danger">{{ $stats['rejected'] }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
             <div class="card-body">
                 <form action="{{ route('portfolios.index') }}" method="GET" class="row g-3">
                     <div class="col-md-4">
-                        <input type="text" name="search" class="form-control" placeholder="Cari judul atau nama siswa..."
+                        <label class="form-label text-muted small mb-1">Pencarian</label>
+                        <input type="text" name="search" class="form-control" placeholder="Judul atau nama siswa"
                                value="{{ request('search') }}" autocomplete="off">
                     </div>
                     <div class="col-md-3">
+                        <label class="form-label text-muted small mb-1">Status</label>
                         <select name="status" class="form-select">
                             <option value="">Semua Status</option>
-                            <option value="pending" @if(request('status') === 'pending') selected @endif>Pending</option>
-                            <option value="approved" @if(request('status') === 'approved') selected @endif>Disetujui</option>
-                            <option value="rejected" @if(request('status') === 'rejected') selected @endif>Ditolak</option>
+                            <option value="pending" @selected(request('status') === 'pending')>Pending</option>
+                            <option value="approved" @selected(request('status') === 'approved')>Disetujui</option>
+                            <option value="rejected" @selected(request('status') === 'rejected')>Ditolak</option>
                         </select>
                     </div>
                     <div class="col-md-3">
+                        <label class="form-label text-muted small mb-1">Tipe</label>
                         <select name="type" class="form-select">
                             <option value="">Semua Tipe</option>
-                            <option value="prestasi" @if(request('type') === 'prestasi') selected @endif>Prestasi</option>
-                            <option value="karya" @if(request('type') === 'karya') selected @endif>Karya</option>
-                            <option value="sertifikat" @if(request('type') === 'sertifikat') selected @endif>Sertifikat</option>
+                            <option value="prestasi" @selected(request('type') === 'prestasi')>Prestasi</option>
+                            <option value="karya" @selected(request('type') === 'karya')>Karya</option>
+                            <option value="sertifikat" @selected(request('type') === 'sertifikat')>Sertifikat</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 d-flex align-items-end">
                         <button type="submit" class="btn btn-outline-primary w-100">
-                            <i class="fas fa-search"></i> Cari
+                            <i class="fas fa-filter me-2"></i> Terapkan
                         </button>
                     </div>
                 </form>
             </div>
         </div>
+    </div>
 
-        <!-- Portfolio List -->
-        @if($portfolios->count() > 0)
-        <div class="row">
-            @foreach($portfolios as $portfolio)
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card portfolio-item h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h5 class="card-title">{{ $portfolio->title }}</h5>
-                            @if($portfolio->type === 'prestasi')
-                                <span class="badge bg-info"><i class="fas fa-trophy"></i> Prestasi</span>
-                            @elseif($portfolio->type === 'karya')
-                                <span class="badge bg-primary"><i class="fas fa-palette"></i> Karya</span>
-                            @else
-                                <span class="badge bg-success"><i class="fas fa-certificate"></i> Sertifikat</span>
-                            @endif
-                        </div>
-
-                        <p class="text-muted mb-2">
-                            <small>
-                                <i class="fas fa-user"></i> 
-                                {{ $portfolio->student->name }} ({{ $portfolio->student->class }})
-                            </small>
-                        </p>
-
-                        <p class="card-text text-truncate" title="{{ $portfolio->description }}">
-                            {{ Str::limit($portfolio->description, 100) }}
-                        </p>
-
-                        <div class="mb-3">
-                            @if($portfolio->verified_status === 'pending')
-                                <span class="badge badge-pending">
-                                    <i class="fas fa-clock"></i> Pending
-                                </span>
-                            @elseif($portfolio->verified_status === 'approved')
-                                <span class="badge badge-approved">
-                                    <i class="fas fa-check-circle"></i> Disetujui
-                                </span>
-                            @else
-                                <span class="badge badge-rejected">
-                                    <i class="fas fa-times-circle"></i> Ditolak
-                                </span>
-                            @endif
-                        </div>
-
-                        <small class="text-muted d-block mb-3">
-                            <i class="fas fa-calendar"></i> 
-                            {{ $portfolio->created_at->locale('id')->translatedFormat('d F Y') }}
-                        </small>
-
-                        <div class="btn-group w-100" role="group">
-                            <a href="{{ route('portfolios.show', $portfolio) }}" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-eye"></i> Lihat
-                            </a>
-                            @can('update', $portfolio)
-                            <a href="{{ route('portfolios.edit', $portfolio) }}" class="btn btn-sm btn-outline-warning">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            @endcan
-                            @can('verify', $portfolio)
-                            <a href="{{ route('portfolios.show', $portfolio) }}" class="btn btn-sm btn-outline-success">
-                                <i class="fas fa-check"></i> Verifikasi
-                            </a>
-                            @endcan
-                        </div>
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                @if($portfolios->count())
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Judul</th>
+                                    <th>Siswa</th>
+                                    <th>Tipe</th>
+                                    <th>Status</th>
+                                    <th>Tanggal</th>
+                                    <th class="text-end">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($portfolios as $portfolio)
+                                    <tr>
+                                        <td>{{ $loop->iteration + ($portfolios->firstItem() - 1) }}</td>
+                                        <td class="fw-semibold">{{ $portfolio->title }}</td>
+                                        <td>
+                                            <div>{{ $portfolio->student->name }}</div>
+                                            <small class="text-muted">{{ $portfolio->student->class }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary text-uppercase">{{ $portfolio->type }}</span>
+                                        </td>
+                                        <td>
+                                            @if($portfolio->verified_status === 'pending')
+                                                <span class="badge badge-pending"><i class="fas fa-clock me-1"></i>Pending</span>
+                                            @elseif($portfolio->verified_status === 'approved')
+                                                <span class="badge badge-approved"><i class="fas fa-check-circle me-1"></i>Disetujui</span>
+                                            @else
+                                                <span class="badge badge-rejected"><i class="fas fa-times-circle me-1"></i>Ditolak</span>
+                                            @endif
+                                        </td>
+                                            <td>{{ $portfolio->created_at->translatedFormat('d M Y') }}</td>
+                                        <td class="text-end">
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{{ route('portfolios.show', $portfolio) }}" class="btn btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                @can('update', $portfolio)
+                                                    <a href="{{ route('portfolios.edit', $portfolio) }}" class="btn btn-outline-warning">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('verify', $portfolio)
+                                                    <a href="{{ route('portfolios.show', ['portfolio' => $portfolio, 'tab' => 'verifikasi']) }}" class="btn btn-outline-success">
+                                                        <i class="fas fa-check"></i>
+                                                    </a>
+                                                @endcan
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+                    <div class="p-3 border-top">
+                        {{ $portfolios->links() }}
+                    </div>
+                @else
+                    <div class="p-4 text-center text-muted">
+                        <i class="fas fa-folder-open fa-2x mb-3"></i>
+                        <p class="mb-0">Belum ada data sesuai filter.</p>
+                    </div>
+                @endif
             </div>
-            @endforeach
         </div>
-
-        <!-- Pagination -->
-        <div class="d-flex justify-content-center mt-4">
-            {{ $portfolios->links() }}
-        </div>
-        @else
-        <div class="alert alert-info text-center">
-            <i class="fas fa-info-circle"></i>
-            <p class="mb-0">Tidak ada portfolio yang ditemukan.</p>
-        </div>
-        @endif
     </div>
 </div>
 @endsection

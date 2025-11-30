@@ -134,7 +134,7 @@
                         </div>
                     </div>
 
-                    <div class="card shadow-sm border-0">
+                    <div class="card shadow-sm border-0 mb-4">
                         <div class="card-header bg-white">
                             <strong>Panduan Singkat</strong>
                         </div>
@@ -154,6 +154,111 @@
                                 </li>
                             </ul>
                         </div>
+                    </div>
+
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-white">
+                            <strong>Matriks Hak Akses CRUD</strong>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-sm mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Role</th>
+                                            <th>Create</th>
+                                            <th>Read</th>
+                                            <th>Update</th>
+                                            <th>Delete</th>
+                                            <th>Verifikasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Student</td>
+                                            <td><i class="fas fa-check text-success"></i></td>
+                                            <td><i class="fas fa-check text-success"></i> (milik sendiri)</td>
+                                            <td><i class="fas fa-check text-success"></i> (pending)</td>
+                                            <td><i class="fas fa-check text-success"></i> (pending)</td>
+                                            <td><i class="fas fa-times text-danger"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Teacher</td>
+                                            <td><i class="fas fa-times text-danger"></i></td>
+                                            <td><i class="fas fa-check text-success"></i> semua</td>
+                                            <td><i class="fas fa-times text-danger"></i></td>
+                                            <td><i class="fas fa-times text-danger"></i></td>
+                                            <td><i class="fas fa-check text-success"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Admin</td>
+                                            <td><i class="fas fa-check text-success"></i></td>
+                                            <td><i class="fas fa-check text-success"></i> semua</td>
+                                            <td><i class="fas fa-check text-success"></i></td>
+                                            <td><i class="fas fa-check text-success"></i></td>
+                                            <td><i class="fas fa-check text-success"></i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+@php
+    $pplCriteria = [
+        'Penjelasan tools perangkat lunak yang digunakan',
+        'Mengeksekusi dan menjalankan source code',
+        'Eksekusi source code sesuai dengan skenario',
+        'Penggunaan metode pengembangan program (PHP Murni/Framework)',
+        'Penyesuaian rancangan aplikasi ERD dengan aplikasi yang dibuat',
+        'Penggunaan pemodelan perangkat lunak sesuai dengan hasil program (UML/DFD)',
+        'Penjelasan struktur data program yang dibuat',
+        'Implementasi struktur data sesuai dengan bahasa pemrograman yang digunakan',
+        'Penerapan kode program sesuai guideline/best practice',
+        'Efektivitas kode program',
+        'Penggunaan tipe data dalam kode program',
+        'Penggunaan struktur percabangan',
+        'Penggunaan struktur perulangan',
+        'Penerapan output pada web browser sesuai source code',
+        'Penerapan prosedur/fungsi yang digunakan dalam kode',
+        'Penerapan array dalam kode program',
+        'Penerapan kode untuk membaca dan menulis data dari media penyimpanan',
+        'Melakukan pengujian program',
+        'Membuat dokumentasi program pada GitHub',
+        'Melakukan debugging dari kode program',
+        'Memperbaiki hasil debugging',
+    ];
+@endphp
+
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-white">
+                    <strong>Checklist Penilaian PPL</strong>
+                    <p class="text-muted small mb-0">Semua poin berikut sudah diimplementasikan melalui modul CRUD ini.</p>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th style="width:60px;">No</th>
+                                    <th>Penilaian</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($pplCriteria as $index => $text)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>{{ $text }}</span>
+                                                <i class="fas fa-check-circle text-success"></i>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

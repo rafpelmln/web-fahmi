@@ -1,3 +1,76 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --sidebar-width: 250px;
+    --sidebar-bg: #111827;
+    --sidebar-text: #cbd5f5;
+    --accent: #2563eb;
+}
+
+body {
+    background-color: #f3f4f6;
+}
+
+.app-shell {
+    min-height: 100vh;
+}
+
+.app-sidebar {
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    padding: 1.5rem 1rem;
+}
+
+.app-sidebar .brand {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.app-sidebar .nav-link {
+    color: var(--sidebar-text);
+    border-radius: 10px;
+    padding: 0.65rem 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.35rem;
+    transition: background .2s ease;
+}
+
+.app-sidebar .nav-link i {
+    width: 18px;
+}
+
+.app-sidebar .nav-link.active,
+.app-sidebar .nav-link:hover {
+    background: rgba(37, 99, 235, 0.15);
+    color: #fff;
+}
+
+.app-main {
+    flex: 1;
+    background: #f9fafb;
+}
+
+.topbar {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
+.stat-card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+}

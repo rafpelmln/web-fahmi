@@ -21,13 +21,15 @@ class PortfolioController extends Controller
      */
     public function index(Request $request)
     {
-        // Inisialisasi query
-        $query = Portfolio::query();
+        $user = Auth::user();
 
-        // Filter berdasarkan role user
-        if (Auth::user()->role === 'student') {
-            // Siswa hanya lihat milik sendiri
-            $query->where('student_id', Auth::id());
+        // Query utama
+        $query = Portfolio::query();
+        $statsQuery = Portfolio::query();
+
+        if ($user->role === 'student') {
+            $query->where('student_id', $user->id);
+            $statsQuery->where('student_id', $user->id);
         }
 
         // Pencarian berdasarkan judul atau nama siswa
@@ -56,9 +58,17 @@ class PortfolioController extends Controller
 
         $portfolios = $query->with('student', 'verifiedByUser')
                             ->latest('created_at')
-                            ->paginate(10);
+                            ->paginate(10)
+                            ->withQueryString();
 
-        return view('portfolios.index', compact('portfolios'));
+        $stats = [
+            'total' => (clone $statsQuery)->count(),
+            'pending' => (clone $statsQuery)->where('verified_status', 'pending')->count(),
+            'approved' => (clone $statsQuery)->where('verified_status', 'approved')->count(),
+            'rejected' => (clone $statsQuery)->where('verified_status', 'rejected')->count(),
+        ];
+
+        return view('portfolios.index', compact('portfolios', 'stats', 'user'));
     }
 
     /**

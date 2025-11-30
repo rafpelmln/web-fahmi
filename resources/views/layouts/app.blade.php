@@ -53,21 +53,21 @@
         </style>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+        <div class="app-shell d-flex">
+            @auth
+                @include('layouts.sidebar')
+            @endauth
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="app-main d-flex flex-column w-100">
+                @include('layouts.navigation')
+
+                @isset($header)
+                    <header class="bg-white shadow-sm py-3 px-4">
                         {{ $header }}
-                    </div>
-                </header>
-            @endisset
+                    </header>
+                @endisset
 
-            <!-- Page Content -->
-            <main class="py-4">
-                <div class="container-fluid">
+                <main class="flex-grow-1 p-3 p-md-4">
                     @if ($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <h4 class="alert-heading">Error!</h4>
@@ -96,8 +96,8 @@
 
                     @yield('content')
                     {{ $slot ?? '' }}
-                </div>
-            </main>
+                </main>
+            </div>
         </div>
 
         <!-- Bootstrap JS -->
