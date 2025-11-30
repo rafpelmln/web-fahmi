@@ -9,6 +9,7 @@ use App\Http\Requests\UpdatePortfolioRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PortfolioController extends Controller
@@ -24,9 +25,9 @@ class PortfolioController extends Controller
         $query = Portfolio::query();
 
         // Filter berdasarkan role user
-        if (auth()->user()->role === 'student') {
+        if (Auth::user()->role === 'student') {
             // Siswa hanya lihat milik sendiri
-            $query->where('student_id', auth()->user()->id);
+            $query->where('student_id', Auth::id());
         }
 
         // Pencarian berdasarkan judul atau nama siswa
@@ -203,7 +204,7 @@ class PortfolioController extends Controller
         // Update portfolio
         $portfolio->update([
             'verified_status' => $validated['verified_status'],
-            'verified_by' => auth()->user()->id,
+            'verified_by' => Auth::id(),
             'verified_at' => now(),
         ]);
 

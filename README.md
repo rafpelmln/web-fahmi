@@ -286,3 +286,19 @@ Lihat file-file dokumentasi untuk informasi lebih detail:
 Last Updated: **27 November 2025**
 
 Untuk informasi lebih lanjut, buka **RINGKASAN_IMPLEMENTASI.md**
+
+## 🔐 Akun Seeder (tes cepat)
+
+Untuk mempermudah pengujian, seeder membuat beberapa akun default. Gunakan akun berikut di lingkungan pengembangan:
+
+- Admin: `admin@example.com` / `password` (role: admin)
+- Teacher: `guru@example.com` / `password` (role: teacher)
+- Student sample: `siswa@example.com` / `password` (role: student)
+- Siswa tambahan (dari PortfolioSeeder):
+   - `budi-susanto@example.com`
+   - `siti-nurhaliza@example.com`
+   - `raha-pratama@example.com`
+   - `eka-widyastuti@example.com`
+   - `ahmad-fadillah@example.com`
+
+Semua password default: `password` (gunakan hanya di lingkungan dev).

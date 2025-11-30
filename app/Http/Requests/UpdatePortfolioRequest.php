@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdatePortfolioRequest extends FormRequest
 {
@@ -11,10 +12,10 @@ class UpdatePortfolioRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // User boleh update portfolio jika dia adalah pemilik atau admin
-        $portfolio = $this->route('portfolio');
-        return auth()->check() && 
-               (auth()->user()->id === $portfolio->student_id || auth()->user()->role === 'admin');
+     // User boleh update portfolio jika dia adalah pemilik atau admin
+     $portfolio = $this->route('portfolio');
+     return Auth::check() && 
+         (Auth::id() === $portfolio->student_id || Auth::user()->role === 'admin');
     }
 
     /**

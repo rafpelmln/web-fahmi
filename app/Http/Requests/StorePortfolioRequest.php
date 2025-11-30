@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Support\Facades\Auth;
 
 class StorePortfolioRequest extends FormRequest
 {
@@ -12,9 +13,9 @@ class StorePortfolioRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // User boleh membuat portfolio jika dia adalah siswa atau admin
-        return auth()->check() && 
-               (auth()->user()->role === 'student' || auth()->user()->role === 'admin');
+     // User boleh membuat portfolio jika dia adalah siswa atau admin
+     return Auth::check() && 
+         (Auth::user()->role === 'student' || Auth::user()->role === 'admin');
     }
 
     /**

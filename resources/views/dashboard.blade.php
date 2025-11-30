@@ -10,6 +10,15 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     {{ __("You're logged in!") }}
+
+                    <div class="mt-3 small text-muted">
+                        <strong>Debug:</strong>
+                        <div>Session ID: {{ session()->getId() }}</div>
+                        <div>Auth ID: {{ auth()->id() ?? 'guest' }}</div>
+                        <div>Auth Email: {{ auth()->user()->email ?? 'n/a' }}</div>
+                        <div>Role: {{ auth()->user()->role ?? 'n/a' }}</div>
+                        <div>APP_URL: {{ config('app.url') }}</div>
+                    </div>
                 </div>
             </div>
         </div>

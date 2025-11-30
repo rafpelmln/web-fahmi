@@ -26,6 +26,13 @@
                             </a>
                         </li>
                     @endif
+                    @if(auth()->user()->role === 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('admin/*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
+                                <i class="fas fa-users-cog"></i> Manage Users
+                            </a>
+                        </li>
+                    @endif
                     
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
